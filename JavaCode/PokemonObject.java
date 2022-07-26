@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Locale;
+
 public class PokemonObject {
     String name = "";
     String number = "";
@@ -11,6 +14,11 @@ public class PokemonObject {
         this.name = name;
         this.number = number;
         this.type = type;
+
+        setName(name);
+        setType(type);
+
+
     }
 
     //getters
@@ -25,11 +33,15 @@ public class PokemonObject {
     public String getType(){
         return this.type;
     }
+
+
+
+
     //setters
 
 
     public void setName(String name) {
-        this.name = name;
+        this.name = findName(name);
     }
 
     public void setNumber(String number) {
@@ -37,7 +49,33 @@ public class PokemonObject {
     }
 
     public void setType(String type) {
-        this.type = type;
+        this.type = findType(type);
+    }
+
+
+    //find name from line
+    private String findName(String line){
+        String foundName = "";
+        String[] list = line.split(" ");
+        for (String str: list) {
+            if(str.contains("alt="))
+                foundName = str.replaceAll("alt=\"|\"","");
+        }
+
+        return foundName;
+    }
+
+    //find type from line
+    private String findType(String line){
+        String foundLine = "";
+        String[] list = line.split(" ");
+        ArrayList<String> typeLines = new ArrayList<String>();
+        for(String str: list){
+            if (str.contains("/type/"))
+                typeLines.add((str.substring(12, str.length()-1)).toUpperCase());
+        }
+
+        return String.join(", ", typeLines);
     }
 
     @Override

@@ -3,6 +3,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class PokemonWebScrape {
@@ -43,28 +44,46 @@ public class PokemonWebScrape {
             if(line.equals("<div class=\"infocard-list infocard-list-pkmn-lg\">"))
                 start = true;
         }
+
         //setting up each pokemon
-
         PokemonObject[] pokemons = new PokemonObject[pokemonLine.size()];
-        for(int i = 0; i < 1; i++){
-            pokemons[i] = new PokemonObject(pokemonLine.get(i),Integer.toString(i+1),"");
-            //System.out.println(pokemons[i]);
-            System.out.println(pokemons[i].getName());
-            String test = pokemons[i].getName();
-            String[] testList= test.split(" ");
-            for (String str: testList) {
-                //System.out.println(str);
-                //Name Setter
-                if(str.contains("alt=")) {
-                    String testStr = str.replaceAll("alt=\"|\"","");
-                    pokemons[i].setName(testStr);
-                }
-            }
-            System.out.println(pokemons[i]);
-
+        for(int i = 0; i < pokemonLine.size(); i++){
+            pokemons[i] = new PokemonObject(pokemonLine.get(i),Integer.toString(i+1),pokemonLine.get(i));
+           // System.out.println(pokemons[i]);
         }
 
+        //getFromNumber("15", pokemons);
+       // getFromName("Beedrill", pokemons);
+        getFromType("fire", pokemons);
+
+        //Arrays.stream(pokemons).forEach(x -> System.out.println(x));
+
+
+
     }
+    //getting pokemon via certain attributes
+    public void getFromNumber(String number, PokemonObject[] list){
+        for (PokemonObject pokemons: list) {
+            if(number.equals(pokemons.getNumber()))
+                System.out.println(pokemons);
+        }
+    }
+
+    public void getFromName(String name, PokemonObject[] list){
+        for (PokemonObject pokemons: list) {
+            if(name.toLowerCase().equals(pokemons.getName().toLowerCase()))
+                System.out.println(pokemons);
+        }
+    }
+
+    public void getFromType(String type, PokemonObject[] list){
+        for (PokemonObject pokemons: list) {
+            if(pokemons.getType().contains(type.toUpperCase()))
+                System.out.println(pokemons);
+        }
+    }
+
+
     //testing the methods
     public static void main(String[] args){
         PokemonWebScrape tester = new PokemonWebScrape();
