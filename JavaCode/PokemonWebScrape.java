@@ -1,8 +1,6 @@
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class PokemonWebScrape {
@@ -33,7 +31,7 @@ public class PokemonWebScrape {
     public static void main(String[] args){
         PokemonWebScrape tester = new PokemonWebScrape();
         tester.webScrape();
-        System.out.println("hiyo");
+        System.out.println("hiyo testing");
     }
 
 
