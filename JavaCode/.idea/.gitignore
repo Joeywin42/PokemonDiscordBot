@@ -1,3 +1,6 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+### Sensitive Data ###
+src/main/resources/discordToken.txt
+target/classes/discordToken.txt
