@@ -7,8 +7,14 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class PokemonWebScrape {
+    ArrayList<PokemonObject> pokemonListClass = new ArrayList<PokemonObject>();
+    public PokemonWebScrape(){
+        webScrape();
+    }
+
 
     public void webScrape(){
+        System.out.println("Running WebScrape");
         String address = "https://pokemondb.net/pokedex/game/red-blue-yellow";
         URL pageLocation = null;
         Scanner in = null;
@@ -49,12 +55,13 @@ public class PokemonWebScrape {
         PokemonObject[] pokemons = new PokemonObject[pokemonLine.size()];
         for(int i = 0; i < pokemonLine.size(); i++){
             pokemons[i] = new PokemonObject(pokemonLine.get(i),Integer.toString(i+1),pokemonLine.get(i));
+            pokemonListClass.add(pokemons[i]);
            // System.out.println(pokemons[i]);
         }
 
         //getFromNumber("15", pokemons);
        // getFromName("Beedrill", pokemons);
-        getFromType("fire", pokemons);
+       // getFromType("fire", pokemons);
 
         //Arrays.stream(pokemons).forEach(x -> System.out.println(x));
 
@@ -62,25 +69,41 @@ public class PokemonWebScrape {
 
     }
     //getting pokemon via certain attributes
-    public void getFromNumber(String number, PokemonObject[] list){
+    public String getFromNumber(String number, ArrayList<PokemonObject> list){
         for (PokemonObject pokemons: list) {
-            if(number.equals(pokemons.getNumber()))
-                System.out.println(pokemons);
+            if (number.equals(pokemons.getNumber()))
+                return pokemons.toString();
         }
+        System.out.println("Running getFromNumber inside PokemonWebScrape Class");
+        return "Failed the search";
     }
 
-    public void getFromName(String name, PokemonObject[] list){
+    public String getFromName(String name, ArrayList<PokemonObject> list){
         for (PokemonObject pokemons: list) {
             if(name.toLowerCase().equals(pokemons.getName().toLowerCase()))
-                System.out.println(pokemons);
+                return pokemons.toString();
         }
+        System.out.println("Running getFromName inside PokemonWebScrape Class");
+        return "failed the search";
     }
 
-    public void getFromType(String type, PokemonObject[] list){
+    public String getFromType(String type, ArrayList<PokemonObject> list){
+        String pokemonListReturn = "";
         for (PokemonObject pokemons: list) {
             if(pokemons.getType().contains(type.toUpperCase()))
-                System.out.println(pokemons);
+                pokemonListReturn += pokemons.toString()+ "\n";
+
         }
+        System.out.println("Running getFromType insde PokemonWebScrape Class");
+        return (pokemonListReturn);
+    }
+
+    public String getAllPokemon(ArrayList<PokemonObject> list){
+        String allPokemon = "";
+        for (PokemonObject pokemonObject: list)
+            allPokemon += pokemonObject.toString() + "\n";
+
+        return allPokemon;
     }
 
 
@@ -88,7 +111,9 @@ public class PokemonWebScrape {
     public static void main(String[] args){
         PokemonWebScrape tester = new PokemonWebScrape();
         tester.webScrape();
+        //System.out.println(tester.getFromType("fire", tester.pokemonListClass));
         //System.out.println("hiyo testing");
+        System.out.println(tester.getAllPokemon(tester.pokemonListClass));
     }
 
 

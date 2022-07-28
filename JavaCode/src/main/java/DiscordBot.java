@@ -1,6 +1,8 @@
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -12,12 +14,17 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class DiscordBot extends ListenerAdapter {
+    PokemonWebScrape pokemons = new PokemonWebScrape();
+
+
 
 
     public static void main(String[] args) throws LoginException, FileNotFoundException {
+
 
         URL url = DiscordBot.class.getResource("discordToken.txt");
         String token = "";
@@ -35,13 +42,16 @@ public class DiscordBot extends ListenerAdapter {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+        //create pokemon
+
+
 
 
 
         JDA bot = JDABuilder
                 .createDefault(token)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.MESSAGE_CONTENT)
-                .setActivity(Activity.watching("Looking at Mochi Barking"))
+                .setActivity(Activity.watching("Mochi Bark "))
                 .addEventListeners(new DiscordBot())
                 .build();
     }
@@ -49,13 +59,97 @@ public class DiscordBot extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
 
+
+
         String msg = event.getMessage().getContentRaw();
-        System.out.println("evant= " + event.getMessage());
+        String msgType = "";
+
+        System.out.println("event= " + event.getMessage());
 
         System.out.println("content= " +msg);
+        System.out.println(msg.substring(2));
+        String keyword = "::";
 
-        if(!event.getAuthor().isBot() && event.getMessage().getContentRaw().equals("Hiyo")){
-            event.getMessage().reply("Hiyo").queue();
+        //gaurd claus
+        if(!msg.startsWith(keyword)) return;
+
+
+        msg = msg.substring(2);
+
+        //All the commands
+        //pokemons.getFromType(msg.substring(8,msg.length()-1),pokemons.pokemonListClass
+        if(!msg.startsWith("p."))
+            switch (msg.toLowerCase()){
+                case "test":
+                    event.getMessage().reply("Test success").queue();
+                    break;
+                case "hiyo":
+                    event.getMessage().reply("hiyo").queue();
+                    break;
+                case "p.type()":
+                    event.getMessage()
+                            .reply(msg.substring(7,msg.length()-1))
+                            .queue();
+                    break;
+                    //CONSTANTLY UPDATE HELP WITH EACH NEW FEATURE
+                case "help": event.getMessage().reply(
+                        "To use the Pokemon commands you must use ::p.\n" +
+                                "----------The commands that I currently have is---------\n" +
+                                "::p.type() This gets all pokemons of a certain type\n" +
+                                "::p.name() This gets the pokemon of said name \n" +
+                                "::p.nums() This gets the pokemon of said number\n" +
+                                "---------------------------------------------\n" +
+                                "Keep in mind that you are to type the command exactly as written with \n" +
+                                "the value in the parenthesis and the parenthesis is also necessary."
+                ).queue();
+                break;
+
+                default: event.getMessage().reply("oops normal" ).queue();
+                break;
+
+            }
+        if(msg.startsWith("p.")){
+            try {
+                    msgType = msg.substring(2, 6);
+                    msg = msg.substring(7, msg.length() - 1);
+                //msgAlt should be case
+                switch (msgType.toLowerCase()) {
+                    case "type":
+                        event.getMessage().reply(pokemons.getFromType(msg, pokemons.pokemonListClass)).queue();
+                        System.out.println("type ran");
+                        break;
+
+                    case "name":
+                        event.getMessage().reply(pokemons.getFromName(msg, pokemons.pokemonListClass)).queue();
+                        System.out.println("name ran");
+                        break;
+
+                    case "nums":
+                        event.getMessage().reply(pokemons.getFromNumber(msg, pokemons.pokemonListClass)).queue();
+                        System.out.println("nums ran");
+                        break;
+
+                    case "allp":
+                        String message = pokemons.getAllPokemon(pokemons.pokemonListClass);
+                        event.getMessage().reply(message.substring(0, message.length()/4)).queue();
+                        event.getMessage().reply(message.substring(message.length()/4, message.length()/2-2)).queue();
+                        event.getMessage().reply(message.substring(message.length()/2-2,message.length()/4*3-8)).queue();
+                        event.getMessage().reply(message.substring(message.length()/4*3-8)).queue();
+
+                        System.out.println("allp Ran");
+                        break;
+
+
+                    default:
+                        System.out.println(msg + " :::THIS DIDNT WORK:::");
+                        event.getMessage().reply("oops Pokemon").queue();
+                        break;
+                    // event
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                event.getMessage().reply("oops Pokemon Handler").queue();
+            }
         }
     }
 }

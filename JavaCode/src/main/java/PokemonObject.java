@@ -62,6 +62,8 @@ public class PokemonObject {
                 foundName = str.replaceAll("alt=\"|\"","");
         }
 
+        System.out.println("Running findName Method");
+
         return foundName;
     }
 
@@ -74,6 +76,8 @@ public class PokemonObject {
             if (str.contains("/type/"))
                 typeLines.add((str.substring(12, str.length()-1)).toUpperCase());
         }
+
+        System.out.println("Running findType Method");
 
         return String.join(", ", typeLines);
     }
