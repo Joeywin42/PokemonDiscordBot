@@ -19,11 +19,25 @@ import java.util.Scanner;
 
 public class DiscordBot extends ListenerAdapter {
     PokemonWebScrape pokemons = new PokemonWebScrape();
+    static SoundMaster device;
+
+    static {
+        try {
+            device = new SoundMaster();
+            device.startSounds();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
 
+    public DiscordBot() throws InterruptedException {
+    }
 
 
-    public static void main(String[] args) throws LoginException, FileNotFoundException {
+    public static void main(String[] args) throws LoginException, FileNotFoundException, InterruptedException {
+
+        System.out.println("Hambot is running");
 
 
         URL url = DiscordBot.class.getResource("discordToken.txt");
@@ -61,6 +75,7 @@ public class DiscordBot extends ListenerAdapter {
 
 
 
+
         String msg = event.getMessage().getContentRaw();
         String msgType = "";
 
@@ -79,34 +94,40 @@ public class DiscordBot extends ListenerAdapter {
         //All the commands
         //pokemons.getFromType(msg.substring(8,msg.length()-1),pokemons.pokemonListClass
         if(!msg.startsWith("p."))
-            switch (msg.toLowerCase()){
-                case "test":
-                    event.getMessage().reply("Test success").queue();
-                    break;
-                case "hiyo":
-                    event.getMessage().reply("hiyo").queue();
-                    break;
-                case "p.type()":
-                    event.getMessage()
-                            .reply(msg.substring(7,msg.length()-1))
-                            .queue();
-                    break;
+            try {
+                switch (msg.toLowerCase()) {
+                    case "test":
+                        event.getMessage().reply("Test success").queue();
+                        break;
+                    case "hiyo":
+                        event.getMessage().reply("hiyo").queue();
+                        break;
+                    case "100":
+                        event.getMessage()
+                                .reply(device.getFromPrice(device.headphonesObjectArrayListReal, msg, "h"))
+                                .queue();
+                        break;
                     //CONSTANTLY UPDATE HELP WITH EACH NEW FEATURE
-                case "help": event.getMessage().reply(
-                        "To use the Pokemon commands you must use ::p.\n" +
-                                "----------The commands that I currently have is---------\n" +
-                                "::p.type() This gets all pokemons of a certain type\n" +
-                                "::p.name() This gets the pokemon of said name \n" +
-                                "::p.nums() This gets the pokemon of said number\n" +
-                                "---------------------------------------------\n" +
-                                "Keep in mind that you are to type the command exactly as written with \n" +
-                                "the value in the parenthesis and the parenthesis is also necessary."
-                ).queue();
-                break;
+                    case "help":
+                        event.getMessage().reply(
+                                "To use the Pokemon commands you must use ::p.\n" +
+                                        "----------The commands that I currently have is---------\n" +
+                                        "::p.type() This gets all pokemons of a certain type\n" +
+                                        "::p.name() This gets the pokemon of said name \n" +
+                                        "::p.nums() This gets the pokemon of said number\n" +
+                                        "---------------------------------------------\n" +
+                                        "Keep in mind that you are to type the command exactly as written with \n" +
+                                        "the value in the parenthesis and the parenthesis is also necessary."
+                        ).queue();
+                        break;
 
-                default: event.getMessage().reply("oops normal" ).queue();
-                break;
+                    default:
+                        event.getMessage().reply("oops normal").queue();
+                        break;
 
+                }
+            }catch (Exception e){
+                e.printStackTrace();
             }
         if(msg.startsWith("p.")){
             try {
