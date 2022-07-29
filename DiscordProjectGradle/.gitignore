@@ -1,0 +1,18 @@
+
+### Sensitive Data ###
+src/main/resources/discordToken.txt
+build/resources/main/discordToken.txt
+
+
+##############################
+## IntelliJ
+##############################
+out/
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
+
+/build/
+/build/resources/main/
