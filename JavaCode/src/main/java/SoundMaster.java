@@ -3,9 +3,7 @@ import com.sun.management.GarbageCollectionNotificationInfo;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class SoundMaster {
 
@@ -67,6 +65,10 @@ public class SoundMaster {
 
                     name = lines[2].replaceAll("<td class=\"column-3\"><a href=\"|</a>|<td class=\"column-3\">|<br><div class=\"at-content-ad\"></div>","");
                     name = name.replaceAll("\">"," ");
+                    name = name.replaceAll("\\bhttp[^\\s]+ | <br> | <a href=","");
+
+
+
 
                     price = lines[3].replaceAll("<td class=\"column-4\">","");
 
@@ -114,7 +116,6 @@ public class SoundMaster {
                         if (Integer.parseInt(headP.getPrice()) <= Integer.parseInt(price))
                             compiledList += headP.toString();
                     } catch (Exception e) {
-                        System.out.println(headP);
                         continue;
                     }
                 }
@@ -132,10 +133,24 @@ public class SoundMaster {
                 }
 
             }
-
-
         return compiledList;
-
+    }
+    public String getFromName(String name, String tag){
+        System.out.println("Running Get from Name");
+        String compiledList = "";
+        name = name.toLowerCase();
+        if(tag.equals("h")) {
+            for (HeadphonesObject head : headphonesObjectArrayListReal) {
+                if (head.getName().toLowerCase().contains(name))
+                    compiledList += head.toString();
+            }
+        } else {
+            for (IEMsObject iems : ieMsObjectArrayListReal) {
+                if (iems.getName().toLowerCase().contains(name))
+                    compiledList += iems.toString();
+            }
+        }
+        return compiledList;
     }
 
 
@@ -154,7 +169,7 @@ public class SoundMaster {
 
     @Override
     public String toString(){
-        String info = "Name: " + name +
+        String info = "\nName: " + name +
                     "\nRank: " + rank +
                     "\nPrice: " + price + "$\n";
 
@@ -165,8 +180,8 @@ public class SoundMaster {
 
     public static void main(String[] args) throws InterruptedException {
         SoundMaster test = new SoundMaster();
+        test.startSounds();
 
-        test.getFromPrice(test.ieMsObjectArrayListReal, "300", "i");
 
         System.out.println(test.getFromPrice(test.headphonesObjectArrayListReal,"100","h"));
 

@@ -93,7 +93,7 @@ public class DiscordBot extends ListenerAdapter {
 
         //All the commands
         //pokemons.getFromType(msg.substring(8,msg.length()-1),pokemons.pokemonListClass
-        if(!msg.startsWith("p."))
+        if(!msg.startsWith("p.") || !msg.startsWith("h.") || !msg.startsWith("i."))
             try {
                 switch (msg.toLowerCase()) {
                     case "test":
@@ -104,23 +104,27 @@ public class DiscordBot extends ListenerAdapter {
                         break;
                     case "100":
                         event.getMessage()
-                                .reply(device.getFromPrice(device.headphonesObjectArrayListReal, msg, "h"))
+                                .reply("```"+(device.getFromPrice(device.headphonesObjectArrayListReal, msg, "h"))+ "```")
+                                .queue();
+                        return;
+                    case "moondrop":
+                        event.getMessage()
+                                .reply("```" + device.getFromName(msg, "h") + "```")
                                 .queue();
                         break;
                     //CONSTANTLY UPDATE HELP WITH EACH NEW FEATURE
                     case "help":
                         event.getMessage().reply(
-                                "To use the Pokemon commands you must use ::p.\n" +
+                                "```To use the Pokemon commands you must use ::p.\n" +
                                         "----------The commands that I currently have is---------\n" +
                                         "::p.type() This gets all pokemons of a certain type\n" +
                                         "::p.name() This gets the pokemon of said name \n" +
                                         "::p.nums() This gets the pokemon of said number\n" +
-                                        "---------------------------------------------\n" +
+                                        "------------------------------------------------------------------------------------------\n" +
                                         "Keep in mind that you are to type the command exactly as written with \n" +
-                                        "the value in the parenthesis and the parenthesis is also necessary."
+                                        "the value in the parenthesis and the parenthesis is also necessary.```"
                         ).queue();
                         break;
-
                     default:
                         event.getMessage().reply("oops normal").queue();
                         break;
@@ -129,6 +133,48 @@ public class DiscordBot extends ListenerAdapter {
             }catch (Exception e){
                 e.printStackTrace();
             }
+
+        if(msg.startsWith("h.") || msg.startsWith("i.")) {
+            try{
+                //h.cost(100)
+                //Variables
+                String tag =  msg.substring(0,1);
+                String parameter = msg.substring(7,msg.length()-1);
+                msg = msg.substring(2,6);
+
+                switch (msg){
+                    case "cost" :
+                        event
+                                .getMessage()
+                                .reply(tag.equals("h") ?
+                                        "```" + device.getFromPrice(device.headphonesObjectArrayListReal, parameter, tag) + "```" :
+                                        "```" + device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag) + "```")
+                                .queue();
+                        return;
+                    case "name":
+                        event
+                                .getMessage()
+                                .reply("```" + device.getFromName(parameter, tag) + "```")
+                                .queue();
+                        return;
+
+                    default:event.getMessage().reply("oops Headphones");
+                            break;
+                }
+
+
+
+
+
+
+
+            }catch (Exception e){
+                e.printStackTrace();
+                event.getMessage().reply("``` oops headphone handler ```").queue();
+
+            }
+        }
+
         if(msg.startsWith("p.")){
             try {
                     msgType = msg.substring(2, 6);
@@ -167,6 +213,7 @@ public class DiscordBot extends ListenerAdapter {
                         break;
                     // event
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
                 event.getMessage().reply("oops Pokemon Handler").queue();
