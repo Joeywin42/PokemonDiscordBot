@@ -171,7 +171,7 @@ public class SoundMaster {
     public String toString(){
         String info = "\nName: " + name +
                     "\nRank: " + rank +
-                    "\nPrice: " + price + "$\n";
+                    "\nPrice: $" + price + "\n";
 
         return info;
     }
@@ -183,7 +183,8 @@ public class SoundMaster {
         test.startSounds();
 
 
-        System.out.println(test.getFromPrice(test.headphonesObjectArrayListReal,"100","h"));
+        //System.out.println(test.getFromPrice(test.headphonesObjectArrayListReal,"100","h"));
+        System.out.println(test.getFromPrice(test.ieMsObjectArrayListReal, "100", "i"));
 
 
 

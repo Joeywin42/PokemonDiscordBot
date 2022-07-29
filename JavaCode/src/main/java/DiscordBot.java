@@ -102,31 +102,27 @@ public class DiscordBot extends ListenerAdapter {
                     case "hiyo":
                         event.getMessage().reply("hiyo").queue();
                         break;
-                    case "100":
-                        event.getMessage()
-                                .reply("```"+(device.getFromPrice(device.headphonesObjectArrayListReal, msg, "h"))+ "```")
-                                .queue();
-                        return;
-                    case "moondrop":
-                        event.getMessage()
-                                .reply("```" + device.getFromName(msg, "h") + "```")
-                                .queue();
-                        break;
+
                     //CONSTANTLY UPDATE HELP WITH EACH NEW FEATURE
                     case "help":
                         event.getMessage().reply(
                                 "```To use the Pokemon commands you must use ::p.\n" +
-                                        "----------The commands that I currently have is---------\n" +
+                                        "----------The commands for pokemon I currently have is---------\n" +
                                         "::p.type() This gets all pokemons of a certain type\n" +
                                         "::p.name() This gets the pokemon of said name \n" +
                                         "::p.nums() This gets the pokemon of said number\n" +
                                         "------------------------------------------------------------------------------------------\n" +
+                                        "The command for Headphones and Iems are \n" +
+                                        "::h.cost() this gets headphones under a certain price \n" +
+                                        "::h.name() this gets headphones with a similar name" +
+                                        "\n::i.cost() this gets iems under a certain cost" +
+                                        "\n::i.name() this gets iems with a similar name" +
                                         "Keep in mind that you are to type the command exactly as written with \n" +
                                         "the value in the parenthesis and the parenthesis is also necessary.```"
                         ).queue();
                         break;
                     default:
-                        event.getMessage().reply("oops normal").queue();
+                        //event.getMessage().reply("oops normal").queue();
                         break;
 
                 }
@@ -147,9 +143,73 @@ public class DiscordBot extends ListenerAdapter {
                         event
                                 .getMessage()
                                 .reply(tag.equals("h") ?
-                                        "```" + device.getFromPrice(device.headphonesObjectArrayListReal, parameter, tag) + "```" :
-                                        "```" + device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag) + "```")
+                                        "```" + device.getFromPrice(device.headphonesObjectArrayListReal, parameter, tag)
+                                                .substring(0, device.getFromPrice(device.headphonesObjectArrayListReal, parameter, tag).length()/4) + "```" :
+                                        "```" + device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag)
+                                                .substring(0, device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag).length()/8)+ "```")
                                 .queue();
+                        event
+                                .getMessage()
+                                .reply(tag.equals("h") ?
+                                        "```" + device.getFromPrice(device.headphonesObjectArrayListReal, parameter, tag)
+                                                .substring(device.getFromPrice(device.headphonesObjectArrayListReal, parameter, tag).length()/4
+                                                ,device.getFromPrice(device.headphonesObjectArrayListReal, parameter, tag).length()/2) + "```" :
+                                        "```" + device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag)
+                                                .substring(device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag).length()/8,
+                                                        device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag).length()/4)+ "```")
+                                .queue();
+                        event
+                                .getMessage()
+                                .reply(tag.equals("h") ?
+                                        "```" + device.getFromPrice(device.headphonesObjectArrayListReal, parameter, tag)
+                                                .substring(device.getFromPrice(device.headphonesObjectArrayListReal, parameter, tag).length()/2
+                                                        ,device.getFromPrice(device.headphonesObjectArrayListReal, parameter, tag).length()/4*3) + "```" :
+                                        "```" + device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag)
+                                                .substring(device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag).length()/4,
+                                                        device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag).length()/8*3)+ "```")
+                                .queue();
+                        event
+                                .getMessage()
+                                .reply(tag.equals("h") ?
+                                        "```" + device.getFromPrice(device.headphonesObjectArrayListReal, parameter, tag)
+                                                .substring(device.getFromPrice(device.headphonesObjectArrayListReal, parameter, tag).length()/4*3) + "```" :
+                                        "```" + device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag)
+                                                .substring(device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag).length()/8*3 ,
+                                                        device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag).length()/2)+ "```")
+                                .queue();
+                        if (tag.equals("i")){
+                            event
+                                    .getMessage()
+                                    .reply("```" + device.getFromPrice(device.ieMsObjectArrayListReal,parameter,tag).
+                                            substring(device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag).length()/2
+                                            , device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag).length()/8*5) + "```")
+                                    .queue();
+                            event
+                                    .getMessage()
+                                    .reply("```" + device.getFromPrice(device.ieMsObjectArrayListReal,parameter,tag).
+                                            substring(device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag).length()/2
+                                                    , device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag).length()/8*5) + "```")
+                                    .queue();
+                            event
+                                    .getMessage()
+                                    .reply("```" + device.getFromPrice(device.ieMsObjectArrayListReal,parameter,tag).
+                                            substring(device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag).length()/8*5
+                                                    , device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag).length()/4*3) + "```")
+                                    .queue();
+                            event
+                                    .getMessage()
+                                    .reply("```" + device.getFromPrice(device.ieMsObjectArrayListReal,parameter,tag).
+                                            substring(device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag).length()/4*3
+                                                    , device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag).length()/8*7) + "```")
+                                    .queue();
+                            event
+                                    .getMessage()
+                                    .reply("```" + device.getFromPrice(device.ieMsObjectArrayListReal,parameter,tag).
+                                            substring(device.getFromPrice(device.ieMsObjectArrayListReal, parameter, tag).length()/7) + "```")
+                                    .queue();
+
+
+                        }
                         return;
                     case "name":
                         event
@@ -182,26 +242,26 @@ public class DiscordBot extends ListenerAdapter {
                 //msgAlt should be case
                 switch (msgType.toLowerCase()) {
                     case "type":
-                        event.getMessage().reply(pokemons.getFromType(msg, pokemons.pokemonListClass)).queue();
+                        event.getMessage().reply("```" + pokemons.getFromType(msg, pokemons.pokemonListClass) + "```").queue();
                         System.out.println("type ran");
                         break;
 
                     case "name":
-                        event.getMessage().reply(pokemons.getFromName(msg, pokemons.pokemonListClass)).queue();
+                        event.getMessage().reply("```" + pokemons.getFromName(msg, pokemons.pokemonListClass) + "```").queue();
                         System.out.println("name ran");
                         break;
 
                     case "nums":
-                        event.getMessage().reply(pokemons.getFromNumber(msg, pokemons.pokemonListClass)).queue();
+                        event.getMessage().reply("```" + pokemons.getFromNumber(msg, pokemons.pokemonListClass) + "```").queue();
                         System.out.println("nums ran");
                         break;
 
                     case "allp":
                         String message = pokemons.getAllPokemon(pokemons.pokemonListClass);
-                        event.getMessage().reply(message.substring(0, message.length()/4)).queue();
-                        event.getMessage().reply(message.substring(message.length()/4, message.length()/2-2)).queue();
-                        event.getMessage().reply(message.substring(message.length()/2-2,message.length()/4*3-8)).queue();
-                        event.getMessage().reply(message.substring(message.length()/4*3-8)).queue();
+                        event.getMessage().reply("```" +message.substring(0, message.length()/4) + "```").queue();
+                        event.getMessage().reply("```" +message.substring(message.length()/4, message.length()/2-2) + "```").queue();
+                        event.getMessage().reply("```" +message.substring(message.length()/2-2,message.length()/4*3-8) + "```").queue();
+                        event.getMessage().reply("```" +message.substring(message.length()/4*3-8) + "```").queue();
 
                         System.out.println("allp Ran");
                         break;
