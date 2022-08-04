@@ -12,8 +12,14 @@ import org.jetbrains.annotations.NotNull;
 import javax.security.auth.login.LoginException;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -21,12 +27,25 @@ public class DiscordBot extends ListenerAdapter {
     PokemonWebScrape pokemons = new PokemonWebScrape();
     static SoundMaster device;
 
+    static Path tokenPath = Paths.get("src/main/resources/discordToken.txt");
+    static String token = readFromFile(tokenPath).get(0);
+
     static {
         try {
             device = new SoundMaster();
             device.startSounds();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    // reads from file
+    public static List<String> readFromFile(Path path ) {
+        try {
+            return Files.readAllLines( path );
+        } catch (IOException e){
+            System.out.println("Error: readFromFile failed");
+            return new ArrayList<>();
         }
     }
 
@@ -40,29 +59,25 @@ public class DiscordBot extends ListenerAdapter {
         System.out.println("Hambot is running");
 
 
-        URL url = DiscordBot.class.getResource("discordToken.txt");
-        String token = "";
-        try{
-            File tokenGenerator = new File(url.toURI().getPath());
-            Scanner reader = new Scanner(tokenGenerator);
+        //URL url = DiscordBot.class.getResource("discordToken.txt");
+        // String token = "";
+        // try{
+        //     File tokenGenerator = new File(url.toURI().getPath());
+        //     Scanner reader = new Scanner(tokenGenerator);
 
-            while(reader.hasNextLine()){
-                token = reader.nextLine();
-            }
+        //     while(reader.hasNextLine()){
+        //         token = reader.nextLine();
+        //     }
 
-        } catch (FileNotFoundException e){
-            System.out.println("The file was probably not found rip");
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+        // } catch (FileNotFoundException e){
+        //     System.out.println("The file was probably not found rip");
+        //     e.printStackTrace();
+        // } catch (URISyntaxException e) {
+        //     e.printStackTrace();
+        // }
         //create pokemon
 
-
-
-
-
-        JDA bot = JDABuilder
+            JDA bot = JDABuilder
                 .createDefault(token)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.MESSAGE_CONTENT)
                 .setActivity(Activity.watching("Mochi Bark "))
